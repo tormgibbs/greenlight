@@ -14,7 +14,7 @@ const version = "1.0.0"
 // Config struct to hold configuration settings
 type config struct {
 	port int
-	env string
+	env  string
 }
 
 // Application struct to hold dependencies
@@ -22,7 +22,6 @@ type application struct {
 	config config
 	logger *log.Logger
 }
-
 
 func main() {
 	// Initialize a config variable
@@ -41,21 +40,17 @@ func main() {
 		logger: logger,
 	}
 
-	// Declare a new servermux and register the routes and handlers
-	mux := http.NewServeMux()
-	mux.HandleFunc("/v1/healthcheck", app.healthCheckHandler)
-
 	// Declare an HTTP server
 	server := &http.Server{
-		Addr: fmt.Sprintf("%d", cfg.port),
-		Handler: mux,
-		IdleTimeout: time.Minute,
-		ReadTimeout: 10 * time.Second,
+		Addr:         fmt.Sprintf(":%d", cfg.port),
+		Handler:      app.routes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
 
 	// Start HTTP server
-	logger.Printf("Starting server on port %d in %s mode", cfg.port, cfg.env)
+	logger.Printf("Starting %s server on port %s", cfg.env, server.Addr)
 	err := server.ListenAndServe()
 	logger.Fatal(err)
 }
