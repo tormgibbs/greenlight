@@ -58,7 +58,7 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 
 // readJSON() reads and decodes JSON from an HTTP request body into the destination struct (dst).
 // If there's an issue during decoding, it returns a descriptive error.
-func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
+func (app *application) readJSON(_ http.ResponseWriter, r *http.Request, dst interface{}) error {
 	// Decode the JSON from the request body into the dst variable
 	err := json.NewDecoder(r.Body).Decode(dst)
 	if err != nil {
